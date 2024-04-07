@@ -8,3 +8,4 @@ urlpatterns = [
     path('<int:pk>/', views.get_post),
 	path('delete/<int:pk>',views.delete_post)
 ]
+
