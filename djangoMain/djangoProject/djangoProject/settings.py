@@ -12,6 +12,8 @@ INSTALLED_APPS = [
     # my app
     'util',
     'lionapp',
+    # third party app
+    'rest_framework',
     # Basic App
     'django.contrib.admin',
     'django.contrib.auth',
