@@ -11,6 +11,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 
+from drf_yasg.utils import swagger_auto_schema
+
+from rest_framework.decorators import authentication_classes
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 def api_response(data=None, message="", status=200):
     response = {
@@ -20,6 +24,28 @@ def api_response(data=None, message="", status=200):
     return Response(response, status=status)
 
 
+
+@api_view(['GET', 'POST'])
+@authentication_classes([JWTAuthentication])  # @api_view 아래에 배치
+def index(request):
+    if request.method == 'POST':
+        return HttpResponse("Post method")
+    else:
+        return HttpResponse("Get method")
+
+
+            
+@swagger_auto_schema(
+        method="POST", 
+        tags=["첫번째 view"],
+        operation_summary="post 생성", 
+        operation_description="post를 생성합니다.",
+        responses={
+            201: '201에 대한 설명', 
+            400: '400에 대한 설명',
+            500: '500에 대한 설명'
+        }
+)
 @api_view(['POST']) #FVB를 이용한 create post   
 def create_post_v2(request):
     post = Post(

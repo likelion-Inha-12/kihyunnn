@@ -1,5 +1,6 @@
 from datetime import timedelta
 from pathlib import Path
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -9,11 +10,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+
+
 INSTALLED_APPS = [
     # my app
     'util',
     'lionapp',
     # third party app
+    'drf_yasg',
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
@@ -139,8 +143,9 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
 
+STATIC_URL = '/static/' # static 파일을 찾을 디렉토리
+STATIC_ROOT = os.path.join(BASE_DIR,'static') # static 파일을 모을 디렉토리
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
@@ -148,3 +153,18 @@ CORS_ALLOWED_ORIGINS = [
     'https://kihyun.o-r.kr',
     # other origins...
 ]
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'SECURITY_DEFINITIONS': {
+        'BearerAuth': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': "JWT Token"
+        }
+    },
+    'SECURITY_REQUIREMENTS': [{
+        'BearerAuth': []
+    }]
+}
