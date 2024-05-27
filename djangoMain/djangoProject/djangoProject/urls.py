@@ -6,5 +6,6 @@ from util import views
 urlpatterns = [
     path('admin/', admin.site.urls),
 		path('health/', views.health),
-    path('lion/', include('lionapp.urls'))
+    path('lion/', include('lionapp.urls')),
+    path('users/', include('users.urls'))
 ]

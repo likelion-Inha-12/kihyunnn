@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,6 +15,7 @@ INSTALLED_APPS = [
     'lionapp',
     # third party app
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
     # Basic App
     'django.contrib.admin',
@@ -22,7 +24,33 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # other apps...
+    'users',
 ]
+
+AUTH_USER_MODEL = 'users.User' # 커스텀 유저를 장고에서 사용하기 위함
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',  # 인증된 요청인지 확인
+        #'rest_framework.permissions.AllowAny',  # 누구나 접근 가능 
+				# (기본적으로 누구나 접근 가능하게 설정하고, 인증된 요청인지 확인하는 api를 따로 지정하게 하려면 
+				# 이 옵션을 위의 옵션 대신 켜주어도 됩니다!)
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # JWT를 통한 인증방식 사용
+    ),
+}
+
+REST_USE_JWT = True
+
+SIMPLE_JWT = {
+    'SIGNING_KEY': 'hellolikelionhellolikelion', # 노출되면 안됨, 지금은 그냥 일단 직접적으로 작성
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # 최상단에 위치할 것
@@ -115,6 +143,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 CORS_ALLOWED_ORIGINS = [
-    "https://kihyun.o-r.kr/"
+    'https://kihyun.o-r.kr',
+    # other origins...
 ]
